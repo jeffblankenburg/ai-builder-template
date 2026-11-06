@@ -1,0 +1,52 @@
+# Supabase CLI configuration for local development (`supabase start`).
+# Docs: https://supabase.com/docs/guides/local-development
+project_id = "ai-builder-template"
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public", "graphql_public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[db]
+port = 54322
+shadow_port = 54320
+major_version = 17
+
+[studio]
+enabled = true
+port = 54323
+
+[inbucket]
+# Local email testing inbox — magic-link / email OTP messages land here.
+enabled = true
+port = 54324
+
+[auth]
+enabled = true
+site_url = "http://localhost:3000"
+additional_redirect_urls = ["http://localhost:3000/auth/confirm"]
+jwt_expiry = 3600
+enable_signup = true
+
+[auth.email]
+enable_signup = true
+enable_confirmations = true
+# OTP codes are 6 digits; raise the lifetime a bit for dev ergonomics.
+otp_length = 6
+otp_expiry = 3600
+
+[auth.sms]
+# Phone sign-in. For local dev, codes print to the Supabase logs unless you
+# wire up a real provider. In PRODUCTION, configure Twilio Verify in the
+# hosted Supabase dashboard (Authentication -> Providers -> Phone).
+enable_signup = true
+enable_confirmations = true
+template = "Your code is {{ .Code }}"
+
+# Uncomment and fill to test real SMS locally via Twilio Verify:
+# [auth.sms.twilio_verify]
+# account_sid = "env(TWILIO_ACCOUNT_SID)"
+# message_service_sid = "env(TWILIO_MESSAGE_SERVICE_SID)"
+# auth_token = "env(TWILIO_AUTH_TOKEN)"
